@@ -1,8 +1,13 @@
-use near_indexer;
 use std::env;
 use std::io;
+
+use actix;
+use tokio::sync::mpsc;
+use tracing::info;
 use tracing_subscriber::filter::LevelFilter;
 use tracing_subscriber::EnvFilter;
+
+use near_indexer;
 
 fn init_logging(verbose: bool) {
     let mut env_filter = EnvFilter::new("tokio_reactor=info,near=info,stats=info,telemetry=info");
@@ -37,8 +42,17 @@ fn init_logging(verbose: bool) {
         .init();
 }
 
+async fn listen_blocks(mut stream: mpsc::Receiver<near_indexer::BlockResponse>) {
+    while let Some(block) = stream.recv().await {
+        // TODO: handle data as you need
+        info!(target: "stats", "{:#?}", block);
+    }
+}
+
 fn main() {
-    init_logging(true);
+    init_logging(false);
     let indexer = near_indexer::Indexer::new();
+    let stream = indexer.receiver();
+    actix::spawn(listen_blocks(stream));
     indexer.start();
 }

@@ -1,13 +1,15 @@
 //! Streamer watches the network and collects all the blocks and related chunks
 //! into one struct and pushes in in to the given queue
+use std::time::Duration;
+
 use actix::Addr;
-use futures;
 use futures::stream::StreamExt;
-use log::{debug, info};
+use tokio::sync::mpsc;
+use tokio::time;
+use tracing::{debug, info};
+
 use near_client;
 use near_primitives::{types, views};
-use std::time::Duration;
-use tokio::time;
 
 const INTERVAL: Duration = Duration::from_millis(500);
 const INDEXER: &str = "indexer";
@@ -25,29 +27,23 @@ pub struct BlockResponse {
 
 /// Fetches the status to retrieve `latest_block_height` to determine if we need to fetch
 /// entire block or we already fetched this block.
-async fn poll_status(
-    client: &Addr<near_client::ClientActor>,
-) -> Result<near_client::StatusResponse, String> {
+async fn fetch_latest_block(
+    client: &Addr<near_client::ViewClientActor>,
+) -> Result<views::BlockView, FailedToFetchData> {
     client
-        .send(near_client::Status { is_health_check: false })
+        .send(near_client::GetBlock::latest())
         .await
-        .map_err(|err| err.to_string())?
+        .map_err(|_| FailedToFetchData)?
+        .map_err(|_| FailedToFetchData)
 }
 
 /// This function supposed to return the entire `BlockResponse`.
 /// It calls fetches the block and fetches all the chunks for the block
 /// and returns everything together in one struct
-async fn fetch_block(
+async fn fetch_block_with_chunks(
     client: &Addr<near_client::ViewClientActor>,
-    block_height: u64,
+    block: views::BlockView,
 ) -> Result<BlockResponse, FailedToFetchData> {
-    let block_id_or_finality =
-        types::BlockIdOrFinality::BlockId(types::BlockId::Height(block_height));
-    let block = client
-        .send(near_client::GetBlock(block_id_or_finality))
-        .await
-        .map_err(|_| FailedToFetchData)?
-        .map_err(|_| FailedToFetchData)?;
     let chunks = fetch_chunks(&client, &block.chunks).await?;
     Ok(BlockResponse { block, chunks })
 }
@@ -82,26 +78,23 @@ async fn fetch_chunks(
 ///
 /// We have to pass `client: Addr<near_client::ClientActor>` and `view_client: Addr<near_client::ViewClientActor>`.
 pub async fn start(
-    client: Addr<near_client::ClientActor>,
     view_client: Addr<near_client::ViewClientActor>,
+    mut queue: mpsc::Sender<BlockResponse>,
 ) {
     info!(target: INDEXER, "Starting Streamer...");
     let mut last_fetched_block_height: types::BlockHeight = 0;
     loop {
         time::delay_for(INTERVAL).await;
-        match poll_status(&client).await {
-            Ok(status_response) => {
-                info!(
-                    target: INDEXER,
-                    "Last block height is {}", status_response.sync_info.latest_block_height
-                );
-                let latest_block_height = status_response.sync_info.latest_block_height;
+        match fetch_latest_block(&view_client).await {
+            Ok(block) => {
+                let latest_block_height = block.header.height;
                 if latest_block_height > last_fetched_block_height {
                     last_fetched_block_height = latest_block_height;
                     info!(target: INDEXER, "The block is new");
                     let block_response =
-                        fetch_block(&view_client, latest_block_height).await.unwrap();
-                    debug!(target: INDEXER, "{:#?}", block_response);
+                        fetch_block_with_chunks(&view_client, block).await.unwrap();
+                    debug!(target: INDEXER, "{:#?}", &block_response);
+                    queue.send(block_response).await;
                 }
             }
             _ => {}

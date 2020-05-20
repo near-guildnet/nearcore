@@ -9,6 +9,7 @@ use neard;
 mod streamer;
 
 pub use self::streamer::BlockResponse;
+pub use near_primitives;
 
 /// Creates runtime and runs `neard` and `streamer`.
 ///

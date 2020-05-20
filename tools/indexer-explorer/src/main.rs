@@ -2,12 +2,23 @@ use std::env;
 use std::io;
 
 use actix;
+use diesel::{
+    prelude::*,
+    r2d2::{ConnectionManager, Pool},
+};
+#[macro_use]
+extern crate diesel;
 use tokio::sync::mpsc;
+use tokio_diesel::*;
 use tracing::info;
 use tracing_subscriber::filter::LevelFilter;
 use tracing_subscriber::EnvFilter;
 
 use near_indexer;
+
+mod models;
+
+mod schema;
 
 fn init_logging(verbose: bool) {
     let mut env_filter = EnvFilter::new("tokio_reactor=info,near=info,stats=info,telemetry=info");
@@ -43,9 +54,33 @@ fn init_logging(verbose: bool) {
 }
 
 async fn listen_blocks(mut stream: mpsc::Receiver<near_indexer::BlockResponse>) {
+    let manager =
+        ConnectionManager::<PgConnection>::new("postgres://near:1111@localhost/near_indexer");
+    let pool = Pool::builder().build(manager).unwrap();
+
     while let Some(block) = stream.recv().await {
         // TODO: handle data as you need
-        info!(target: "stats", "{:#?}", block);
+        info!(target: "stats", "Block height {}", &block.block.header.height);
+        match diesel::insert_into(schema::blocks::table)
+            .values(models::Block::from_block_view(&block.block))
+            .execute_async(&pool)
+            .await
+        {
+            Ok(_) => {}
+            Err(_) => continue,
+        };
+
+        diesel::insert_into(schema::chunks::table)
+            .values(
+                block
+                    .chunks
+                    .iter()
+                    .map(|chunk| models::Chunk::from_chunk_view(block.block.header.height, chunk))
+                    .collect::<Vec<models::Chunk>>(),
+            )
+            .execute_async(&pool)
+            .await
+            .unwrap();
     }
 }
 

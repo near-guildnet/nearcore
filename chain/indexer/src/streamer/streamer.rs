@@ -21,8 +21,8 @@ pub struct FailedToFetchData;
 /// Resulting struct represents block with chunks
 #[derive(Debug)]
 pub struct BlockResponse {
-    block: views::BlockView,
-    chunks: Vec<views::ChunkView>,
+    pub block: views::BlockView,
+    pub chunks: Vec<views::ChunkView>,
 }
 
 /// Fetches the status to retrieve `latest_block_height` to determine if we need to fetch

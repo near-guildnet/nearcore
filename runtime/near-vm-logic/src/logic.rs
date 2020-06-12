@@ -2236,10 +2236,12 @@ impl<'a> VMLogic<'a> {
     /// Adds fee based on codesize 
     pub fn add_contract_size_fee(&mut self, num_bytes: u64) {
       self.gas_counter.pay_per_byte(contract_load_byte, num_bytes);
+      self.gas_counter.add_contract_size_base_fee(num_bytes);
     }
 
     pub fn add_contract_compile_fee(&mut self, cost: u64) {
       self.gas_counter.pay_per_byte(contract_compile, cost);
+      self.gas_counter.pay_base(contract_compile_base);
     }
 }
 

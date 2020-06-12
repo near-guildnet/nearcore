@@ -161,8 +161,14 @@ pub struct ExtCostsConfig {
     /// Base cost for calling a host function.
     pub base: Gas,
 
+    /// Base cost to load in a contract
+    pub contract_load_base: Gas,
+
     /// Cost to load in contract bytes
     pub contract_load_byte: Gas,
+
+    /// Base cost of compiling a contract
+    pub contract_compile_base: Gas,
 
     /// Cost of the execution to compile contract
     pub contract_compile: Gas,
@@ -297,7 +303,9 @@ impl Default for ExtCostsConfig {
     fn default() -> ExtCostsConfig {
         ExtCostsConfig {
             base: SAFETY_MULTIPLIER * 88420586,
+            contract_load_base: SAFETY_MULTIPLIER * 861350075,
             contract_load_byte: SAFETY_MULTIPLIER * 1096628,
+            contract_compile_base: SAFETY_MULTIPLIER * 88420586,
             contract_compile: SAFETY_MULTIPLIER * 1197896600,
             read_memory_base: SAFETY_MULTIPLIER * 861350075,
             read_memory_byte: SAFETY_MULTIPLIER * 1267132,
@@ -353,7 +361,9 @@ impl ExtCostsConfig {
     fn free() -> ExtCostsConfig {
         ExtCostsConfig {
             base: 0,
+            contract_load_base: 0,
             contract_load_byte: 0,
+            contract_compile_base: 0,
             contract_compile: 0,
             read_memory_base: 0,
             read_memory_byte: 0,
@@ -410,7 +420,9 @@ impl ExtCostsConfig {
 #[allow(non_camel_case_types)]
 pub enum ExtCosts {
     base,
+    contract_load_base,
     contract_load_byte,
+    contract_compile_base,
     contract_compile,
     read_memory_base,
     read_memory_byte,

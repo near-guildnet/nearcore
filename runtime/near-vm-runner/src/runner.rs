@@ -81,6 +81,7 @@ pub fn run<'a>(
     let mut logic =
         VMLogic::new(ext, context, wasm_config, fees_config, promise_results, &mut memory);
     
+    
     logic.add_contract_size_fee(code.len() as u64);
     logic.add_contract_compile_fee(COST_OF_COMPILE);
     let import_object = imports::build(memory_copy, &mut logic);

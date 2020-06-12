@@ -30,6 +30,7 @@ fn check_method(module: &Module, method_name: &str) -> Result<(), VMError> {
 /// `run` does the following:
 /// - deserializes and validate the `code` binary (see `prepare::prepare_contract`)
 /// - injects gas counting into
+/// - adds fee to VMLogic's GasCounter for size of contract
 /// - instantiates (links) `VMLogic` externs with the imports of the binary
 /// - calls the `method_name` with `context.input`
 ///   - updates `ext` with new receipts, created during the execution
@@ -67,6 +68,7 @@ pub fn run<'a>(
         Ok(x) => x,
         Err(err) => return (None, Some(err)),
     };
+    const COST_OF_COMPILE: u64 = 100;
     let mut memory = match WasmerMemory::new(
         wasm_config.limit_config.initial_memory_pages,
         wasm_config.limit_config.max_memory_pages,
@@ -78,7 +80,9 @@ pub fn run<'a>(
 
     let mut logic =
         VMLogic::new(ext, context, wasm_config, fees_config, promise_results, &mut memory);
-
+    
+    logic.add_contract_size_fee(code.len() as u64);
+    logic.add_contract_compile_fee(COST_OF_COMPILE);
     let import_object = imports::build(memory_copy, &mut logic);
 
     let method_name = match std::str::from_utf8(method_name) {
@@ -95,7 +99,6 @@ pub fn run<'a>(
     if let Err(e) = check_method(&module, method_name) {
         return (None, Some(e));
     }
-
     match module.instantiate(&import_object) {
         Ok(instance) => match instance.call(&method_name, &[]) {
             Ok(_) => (Some(logic.outcome()), None),

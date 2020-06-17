@@ -554,12 +554,11 @@ fn get_ext_costs_config(measurement: &Measurements) -> ExtCostsConfig {
     let measured = generator.compute();
     let metric = measurement.gas_metric;
     use ExtCosts::*;
+    let (contract_compile_cost, contract_compile_base_cost) = cost_to_compile(metric);
     ExtCostsConfig {
         base: measured_to_gas(metric, &measured, base),
-        contract_compile_base: measured_to_gas(metric, &measured, contract_compile_base),
-        contract_compile: ratio_to_gas(metric, cost_to_compile(metric)),
-        contract_load_byte: measured_to_gas(metric, &measured, contract_load_byte),
-        contract_load_base: measured_to_gas(metric, &measured, contract_load_base),
+        contract_compile_base: contract_compile_base_cost,
+        contract_compile: contract_compile_cost,
         read_memory_base: measured_to_gas(metric, &measured, read_memory_base),
         read_memory_byte: measured_to_gas(metric, &measured, read_memory_byte),
         write_memory_base: measured_to_gas(metric, &measured, write_memory_base),

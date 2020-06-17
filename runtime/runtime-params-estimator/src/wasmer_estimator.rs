@@ -1,6 +1,7 @@
 use crate::testbed_runners::end_count;
 use crate::testbed_runners::start_count;
 use crate::testbed_runners::GasMetric;
+use crate::stats::fit;
 use near_runtime_fees::RuntimeFeesConfig;
 use near_vm_logic::mocks::mock_external::MockedExternal;
 use near_vm_logic::{VMConfig, VMContext, VMOutcome};
@@ -101,23 +102,37 @@ pub fn cost_per_op(gas_metric: GasMetric) -> Ratio<u64> {
     )
 }
 
-fn compile() {
-    let code = include_bytes!("../test-contract/res/large_contract.wasm");
-    let prepared_code = prepare::prepare_contract(code, &VMConfig::default()).unwrap();
-    wasmer_runtime::compile(&prepared_code).unwrap();
+fn compile(code: &[u8], gas_metric: GasMetric) -> f64 {
+  let prepared_code = prepare::prepare_contract(code, &VMConfig::default()).unwrap();
+  let start = start_count(gas_metric);
+    for _ in 0..NUM_ITERATIONS {
+      wasmer_runtime::compile(&prepared_code).unwrap();
+    }
+    (end_count(gas_metric, &start) as f64) / (NUM_ITERATIONS as f64)
 }
 
-/// Cost of the most CPU demanding operation.
-pub fn cost_to_compile(gas_metric: GasMetric) -> Ratio<u64> {
-    // Call once for the warmup.
-    let start = start_count(gas_metric);
-    for _ in 0..NUM_ITERATIONS {
-        compile();
-    }
-    let measured = end_count(gas_metric, &start);
+fn compileLarge(gas_metric: GasMetric) -> (f64, f64) {
+  let code = include_bytes!("../test-contract/res/large_contract.wasm");
+  (code.len() as f64, compile(code, gas_metric))
+}
 
-    Ratio::new(
-        measured ,
-        NUM_ITERATIONS,
-    )
+fn compileMedium(gas_metric: GasMetric) -> (f64, f64) {
+  let code = include_bytes!("../test-contract/res/medium_contract.wasm");
+  (code.len() as f64, compile(code, gas_metric))
+}
+
+fn compileSmall(gas_metric: GasMetric) -> (f64, f64) {
+  let code = include_bytes!("../test-contract/res/small_contract.wasm");
+  (code.len() as f64, compile(code, gas_metric))
+}
+
+
+/// Cost of the most CPU demanding operation.
+pub fn cost_to_compile(gas_metric: GasMetric) -> (u64, u64) {
+    // Call once for the warmup.
+    let (sx, sy) = compileSmall(gas_metric);
+    let (mx, my) = compileMedium(gas_metric);
+    let (lx, ly) = compileLarge(gas_metric);
+    let (m, b) = fit(&vec![sx, mx, lx], &vec![sy, my, ly]);
+    (m as u64, b as u64)
 }

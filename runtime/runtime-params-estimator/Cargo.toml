@@ -5,6 +5,8 @@ authors = ["Near Inc <hello@nearprotocol.com>"]
 edition = "2018"
 
 [dependencies]
+wasmer-runtime = { version = "=0.17.0", features = ["default-backend-singlepass"], default-features = false }
+wasmer-runtime-core = { version = "=0.17.0" }
 indicatif = "0.14"
 tempfile = "3"
 rand = "0.7.2"

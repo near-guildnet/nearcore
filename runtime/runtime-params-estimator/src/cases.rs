@@ -21,7 +21,7 @@ use crate::stats::Measurements;
 use crate::testbed::RuntimeTestbed;
 use crate::testbed_runners::GasMetric;
 use crate::testbed_runners::{get_account_id, measure_actions, measure_transactions, Config};
-use crate::wasmer_estimator::cost_per_op;
+use crate::wasmer_estimator::{cost_per_op, cost_to_compile};
 use near_runtime_fees::{
     AccessKeyCreationConfig, ActionCreationConfig, DataReceiptCreationConfig, Fee,
     RuntimeFeesConfig,
@@ -556,6 +556,10 @@ fn get_ext_costs_config(measurement: &Measurements) -> ExtCostsConfig {
     use ExtCosts::*;
     ExtCostsConfig {
         base: measured_to_gas(metric, &measured, base),
+        contract_compile_base: measured_to_gas(metric, &measured, contract_compile_base),
+        contract_compile: ratio_to_gas(metric, cost_to_compile(metric)),
+        contract_load_byte: measured_to_gas(metric, &measured, contract_load_byte),
+        contract_load_base: measured_to_gas(metric, &measured, contract_load_base),
         read_memory_base: measured_to_gas(metric, &measured, read_memory_base),
         read_memory_byte: measured_to_gas(metric, &measured, read_memory_byte),
         write_memory_base: measured_to_gas(metric, &measured, write_memory_base),

@@ -3,6 +3,7 @@ use crate::stats::{DataStats, Measurements};
 use near_vm_logic::ExtCosts;
 use num_rational::Ratio;
 use std::collections::BTreeMap;
+use crate::wasmer_estimator::cost_to_compile;
 
 pub struct ExtCostsGenerator {
     agg: BTreeMap<Metric, DataStats>,

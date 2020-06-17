@@ -4,10 +4,12 @@ use crate::testbed_runners::GasMetric;
 use near_runtime_fees::RuntimeFeesConfig;
 use near_vm_logic::mocks::mock_external::MockedExternal;
 use near_vm_logic::{VMConfig, VMContext, VMOutcome};
-use near_vm_runner::VMError;
+use near_vm_runner::{prepare, VMError};
 use num_rational::Ratio;
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
+use wasmer_runtime;
+
 
 const CURRENT_ACCOUNT_ID: &str = "alice";
 const SIGNER_ACCOUNT_ID: &str = "bob";
@@ -96,5 +98,26 @@ pub fn cost_per_op(gas_metric: GasMetric) -> Ratio<u64> {
     Ratio::new(
         measured * (VMConfig::default().regular_op_cost as u64),
         NUM_ITERATIONS * outcome.burnt_gas,
+    )
+}
+
+fn compile() {
+    let code = include_bytes!("../test-contract/res/large_contract.wasm");
+    let prepared_code = prepare::prepare_contract(code, &VMConfig::default()).unwrap();
+    wasmer_runtime::compile(&prepared_code).unwrap();
+}
+
+/// Cost of the most CPU demanding operation.
+pub fn cost_to_compile(gas_metric: GasMetric) -> Ratio<u64> {
+    // Call once for the warmup.
+    let start = start_count(gas_metric);
+    for _ in 0..NUM_ITERATIONS {
+        compile();
+    }
+    let measured = end_count(gas_metric, &start);
+
+    Ratio::new(
+        measured ,
+        NUM_ITERATIONS,
     )
 }

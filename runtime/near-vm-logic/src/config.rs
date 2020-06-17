@@ -478,6 +478,8 @@ impl ExtCosts {
         match self {
             base => config.base,
             contract_load_byte => config.contract_load_byte,
+            contract_load_base => config.contract_load_base,
+            contract_compile_base => config.contract_compile_base,
             contract_compile => config.contract_compile,
             read_memory_base => config.read_memory_base,
             read_memory_byte => config.read_memory_byte,

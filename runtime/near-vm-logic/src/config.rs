@@ -167,7 +167,7 @@ pub struct ExtCostsConfig {
     /// Base cost of loading and compiling acontract
     pub contract_compile_base: Gas,
     /// Cost of the execution to load and compile contract
-    pub contract_compile: Gas,
+    pub contract_compile_bytes: Gas,
 
     /// Base cost for guest memory read
     pub read_memory_base: Gas,
@@ -300,7 +300,7 @@ impl Default for ExtCostsConfig {
         ExtCostsConfig {
             base: SAFETY_MULTIPLIER * 88420586,
             contract_compile_base: SAFETY_MULTIPLIER * 88420586,
-            contract_compile: SAFETY_MULTIPLIER * 1197896600,
+            contract_compile_bytes: SAFETY_MULTIPLIER * 1197896600,
             read_memory_base: SAFETY_MULTIPLIER * 861350075,
             read_memory_byte: SAFETY_MULTIPLIER * 1267132,
             write_memory_base: SAFETY_MULTIPLIER * 926910575,
@@ -356,7 +356,7 @@ impl ExtCostsConfig {
         ExtCostsConfig {
             base: 0,
             contract_compile_base: 0,
-            contract_compile: 0,
+            contract_compile_bytes: 0,
             read_memory_base: 0,
             read_memory_byte: 0,
             write_memory_base: 0,
@@ -413,7 +413,7 @@ impl ExtCostsConfig {
 pub enum ExtCosts {
     base,
     contract_compile_base,
-    contract_compile,
+    contract_compile_bytes,
     read_memory_base,
     read_memory_byte,
     write_memory_base,
@@ -468,7 +468,7 @@ impl ExtCosts {
         match self {
             base => config.base,
             contract_compile_base => config.contract_compile_base,
-            contract_compile => config.contract_compile,
+            contract_compile_bytes => config.contract_compile_bytes,
             read_memory_base => config.read_memory_base,
             read_memory_byte => config.read_memory_byte,
             write_memory_base => config.write_memory_base,

@@ -2234,7 +2234,7 @@ impl<'a> VMLogic<'a> {
     }
 
     pub fn add_contract_compile_fee(&mut self, code_len: u64) {
-      self.gas_counter.pay_per_byte(contract_compile, code_len).unwrap();
+      self.gas_counter.pay_per_byte(contract_compile_bytes, code_len).unwrap();
       self.gas_counter.pay_base(contract_compile_base).unwrap();
     }
 }

@@ -111,17 +111,17 @@ fn compile(code: &[u8], gas_metric: GasMetric) -> f64 {
     (end_count(gas_metric, &start) as f64) / (NUM_ITERATIONS as f64)
 }
 
-fn compileLarge(gas_metric: GasMetric) -> (f64, f64) {
+fn compile_large(gas_metric: GasMetric) -> (f64, f64) {
   let code = include_bytes!("../test-contract/res/large_contract.wasm");
   (code.len() as f64, compile(code, gas_metric))
 }
 
-fn compileMedium(gas_metric: GasMetric) -> (f64, f64) {
+fn compile_medium(gas_metric: GasMetric) -> (f64, f64) {
   let code = include_bytes!("../test-contract/res/medium_contract.wasm");
   (code.len() as f64, compile(code, gas_metric))
 }
 
-fn compileSmall(gas_metric: GasMetric) -> (f64, f64) {
+fn compile_small(gas_metric: GasMetric) -> (f64, f64) {
   let code = include_bytes!("../test-contract/res/small_contract.wasm");
   (code.len() as f64, compile(code, gas_metric))
 }
@@ -130,9 +130,9 @@ fn compileSmall(gas_metric: GasMetric) -> (f64, f64) {
 /// Cost of the most CPU demanding operation.
 pub fn cost_to_compile(gas_metric: GasMetric) -> (u64, u64) {
     // Call once for the warmup.
-    let (sx, sy) = compileSmall(gas_metric);
-    let (mx, my) = compileMedium(gas_metric);
-    let (lx, ly) = compileLarge(gas_metric);
+    let (sx, sy) = compile_small(gas_metric);
+    let (mx, my) = compile_medium(gas_metric);
+    let (lx, ly) = compile_large(gas_metric);
     let (m, b) = fit(&vec![sx, mx, lx], &vec![sy, my, ly]);
     (m as u64, b as u64)
 }

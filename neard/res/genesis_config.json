@@ -137,7 +137,7 @@
         "contract_load_base":861350075,
         "contract_load_byte": 1096628,
         "contract_compile_base": 88420586,
-        "contract_compile": 1197896600,
+        "contract_compile_bytes": 1197896600,
         "read_memory_base": 2584050225,
         "read_memory_byte": 3801396,
         "write_memory_base": 2780731725,

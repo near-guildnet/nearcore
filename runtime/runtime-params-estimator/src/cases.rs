@@ -558,7 +558,7 @@ fn get_ext_costs_config(measurement: &Measurements) -> ExtCostsConfig {
     ExtCostsConfig {
         base: measured_to_gas(metric, &measured, base),
         contract_compile_base: contract_compile_base_cost,
-        contract_compile: contract_compile_cost,
+        contract_compile_bytes: contract_compile_cost,
         read_memory_base: measured_to_gas(metric, &measured, read_memory_base),
         read_memory_byte: measured_to_gas(metric, &measured, read_memory_byte),
         write_memory_base: measured_to_gas(metric, &measured, write_memory_base),

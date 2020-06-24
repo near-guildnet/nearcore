@@ -868,6 +868,10 @@ impl RuntimeAdapter for KeyValueRuntime {
         Ok(block_height.saturating_sub(NUM_EPOCHS_TO_KEEP_STORE_DATA * self.epoch_length))
     }
 
+    fn check_sync_hash_on_epoch_boundary(&self, _sync_hash: &CryptoHash) -> bool {
+        true
+    }
+
     fn epoch_exists(&self, _epoch_id: &EpochId) -> bool {
         true
     }

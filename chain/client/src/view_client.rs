@@ -789,6 +789,11 @@ impl Handler<NetworkViewClientMessages> for ViewClientActor {
             NetworkViewClientMessages::StateRequestHeader { shard_id, sync_hash } => {
                 let state_response = match self.chain.get_block(&sync_hash) {
                     Ok(_) => {
+                        if !self.runtime_adapter.check_sync_hash_on_epoch_boundary(&sync_hash) {
+                            // Invalid sync_hash, possible malicious behavior
+                            warn!(target: "sync", "Invalid sync_hash received {:?} for state request header", sync_hash);
+                            return NetworkViewClientResponses::NoResponse;
+                        }
                         let header = match self.chain.get_state_response_header(shard_id, sync_hash)
                         {
                             Ok(header) => Some(header),
@@ -815,6 +820,11 @@ impl Handler<NetworkViewClientMessages> for ViewClientActor {
             NetworkViewClientMessages::StateRequestPart { shard_id, sync_hash, part_id } => {
                 let state_response = match self.chain.get_block(&sync_hash) {
                     Ok(_) => {
+                        if !self.runtime_adapter.check_sync_hash_on_epoch_boundary(&sync_hash) {
+                            // Invalid sync_hash, possible malicious behavior
+                            warn!(target: "sync", "Invalid sync_hash received {:?} for state request part", sync_hash);
+                            return NetworkViewClientResponses::NoResponse;
+                        }
                         let part = match self
                             .chain
                             .get_state_response_part(shard_id, part_id, sync_hash)

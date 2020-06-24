@@ -330,6 +330,9 @@ pub trait RuntimeAdapter: Send + Sync {
     /// Get the block height for which garbage collection should not go over
     fn get_gc_stop_height(&self, block_hash: &CryptoHash) -> Result<BlockHeight, Error>;
 
+    /// Check if sync hash is on Epoch boundary and within last two Epochs.
+    fn check_sync_hash_on_epoch_boundary(&self, sync_hash: &CryptoHash) -> bool;
+
     /// Check if epoch exists.
     fn epoch_exists(&self, epoch_id: &EpochId) -> bool;
 

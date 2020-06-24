@@ -148,10 +148,6 @@ impl ShardTracker {
         Ok(())
     }
 
-    pub fn get_current_epoch_id(&self) -> &EpochId {
-        &self.current_epoch_id
-    }
-
     /// Stop tracking a list of accounts in the next epoch.
     #[allow(unused)]
     pub fn untrack_accounts(

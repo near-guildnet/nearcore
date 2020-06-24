@@ -892,7 +892,11 @@ impl RuntimeAdapter for NightshadeRuntime {
         Ok(epoch_start_height)
     }
 
-    fn check_sync_hash_on_epoch_boundary(&self, sync_hash: &CryptoHash) -> bool {
+    fn check_sync_hash_on_epoch_boundary(
+        &self,
+        sync_hash: &CryptoHash,
+        last_block_hash: &CryptoHash,
+    ) -> bool {
         let mut epoch_manager = self.epoch_manager.as_ref().write().expect(POISONED_LOCK_ERR);
         let block_info = match epoch_manager.get_block_info(sync_hash) {
             Ok(block_info) => block_info.clone(),
@@ -902,16 +906,19 @@ impl RuntimeAdapter for NightshadeRuntime {
         // 1. sync_hash must be on the Epoch boundary
         if block_info.epoch_first_block == *sync_hash {
             // 2. Epoch of sync_hash can be either the last one or the previous one
-            let last_epoch = self.shard_tracker.get_current_epoch_id();
             // 2a. Epoch of sync_hash may be the latest one
-            if block_info.epoch_id == *last_epoch {
+            if sync_hash == last_block_hash {
                 true
             } else {
                 // 2b. Epoch of sync_hash may be the previous one
                 // This means, the next epoch of sync_hash should be the latest one
                 match epoch_manager.get_next_epoch_id(sync_hash) {
                     Ok(next_epoch_id) => {
-                        if next_epoch_id == *last_epoch {
+                        let last_epoch_id = &epoch_manager
+                            .get_block_info(sync_hash)
+                            .expect("block info for last_block_hash exists")
+                            .epoch_id;
+                        if &next_epoch_id == last_epoch_id {
                             true
                         } else {
                             false

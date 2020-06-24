@@ -789,7 +789,15 @@ impl Handler<NetworkViewClientMessages> for ViewClientActor {
             NetworkViewClientMessages::StateRequestHeader { shard_id, sync_hash } => {
                 let state_response = match self.chain.get_block(&sync_hash) {
                     Ok(_) => {
-                        if !self.runtime_adapter.check_sync_hash_on_epoch_boundary(&sync_hash) {
+                        let last_block_hash = self
+                            .chain
+                            .head()
+                            .unwrap_or_else(|_| Tip::from_header(self.chain.genesis()))
+                            .last_block_hash;
+                        if !self
+                            .runtime_adapter
+                            .check_sync_hash_on_epoch_boundary(&sync_hash, &last_block_hash)
+                        {
                             // Invalid sync_hash, possible malicious behavior
                             warn!(target: "sync", "Invalid sync_hash received {:?} for state request header", sync_hash);
                             return NetworkViewClientResponses::NoResponse;
@@ -820,7 +828,15 @@ impl Handler<NetworkViewClientMessages> for ViewClientActor {
             NetworkViewClientMessages::StateRequestPart { shard_id, sync_hash, part_id } => {
                 let state_response = match self.chain.get_block(&sync_hash) {
                     Ok(_) => {
-                        if !self.runtime_adapter.check_sync_hash_on_epoch_boundary(&sync_hash) {
+                        let last_block_hash = self
+                            .chain
+                            .head()
+                            .unwrap_or_else(|_| Tip::from_header(self.chain.genesis()))
+                            .last_block_hash;
+                        if !self
+                            .runtime_adapter
+                            .check_sync_hash_on_epoch_boundary(&sync_hash, &last_block_hash)
+                        {
                             // Invalid sync_hash, possible malicious behavior
                             warn!(target: "sync", "Invalid sync_hash received {:?} for state request part", sync_hash);
                             return NetworkViewClientResponses::NoResponse;

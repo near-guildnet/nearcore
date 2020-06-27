@@ -1555,16 +1555,8 @@ mod test {
     };
     use near_chain::test_utils::KeyValueRuntime;
     use near_network::test_utils::MockNetworkAdapter;
-<<<<<<< HEAD
     use near_primitives::hash::hash;
     use near_primitives::sharding::ChunkHash;
-=======
-    use near_network::types::{NetworkRequests, PartialEncodedChunkForwardMsg};
-    use near_primitives::hash::{hash, CryptoHash};
-    use near_primitives::merkle::merklize;
-    use near_primitives::sharding::{ChunkHash, PartialEncodedChunk, ReedSolomonWrapper};
-    use near_primitives::validator_signer::InMemoryValidatorSigner;
->>>>>>> fix(chunks) - automatically forward parts to shard trackers (#2608) (#2822)
     use near_store::test_utils::create_test_store;
     use std::sync::Arc;
     use std::time::{Duration, Instant};

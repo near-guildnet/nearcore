@@ -62,7 +62,7 @@ def compile_package(package_name, is_release):
     flags = ['-p', package_name]
     if is_release:
         flags = ['--release'] + flags
-    code = subprocess.call([os.path.expanduser('cargo'), 'build'] + flags)
+    code = subprocess.call([os.path.expanduser('~/.cargo/bin/cargo'), 'build'] + flags)
     if code != 0:
         print("Compilation failed, aborting")
         exit(code)

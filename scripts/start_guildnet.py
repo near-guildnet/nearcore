@@ -13,7 +13,7 @@ if __name__ == "__main__":
     DEFAULT_BOOT_NODE = ','.join([
         "ed25519:388zoreQQJJvQaVNhNfKNDaGqJX1JYHfVXmSNoBQXFAF@161.35.229.231:24567",
     ])
-    TELEMETRY_URL = 'https://explorer.nearprotocol.com/api/nodes'
+    TELEMETRY_URL = ''
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--local',

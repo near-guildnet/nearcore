@@ -11,7 +11,7 @@ if __name__ == "__main__":
     print("****************************************************")
 
     DEFAULT_BOOT_NODE = ','.join([
-        "ed25519:FKLR9zWTFZ7yazX74h4AqgmxDDhgr1cmaSky999keGsV@161.35.229.231:24567",
+        "ed25519:388zoreQQJJvQaVNhNfKNDaGqJX1JYHfVXmSNoBQXFAF@161.35.229.231:24567",
     ])
     TELEMETRY_URL = 'https://explorer.nearprotocol.com/api/nodes'
 

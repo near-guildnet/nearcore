@@ -12,6 +12,7 @@ if __name__ == "__main__":
 
     DEFAULT_BOOT_NODE = ','.join([
         "ed25519:388zoreQQJJvQaVNhNfKNDaGqJX1JYHfVXmSNoBQXFAF@161.35.229.231:24567",
+        "ed25519:SKqyG3fKSKBtoPysHw4KRK6Ws4zBGy3NXaRvBe5R4Yc@199.241.136.89:24567",
     ])
     TELEMETRY_URL = ''
 

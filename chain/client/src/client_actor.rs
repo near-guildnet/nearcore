@@ -55,7 +55,7 @@ use crate::StatusResponse;
 /// Multiplier on `max_block_time` to wait until deciding that chain stalled.
 const STATUS_WAIT_TIME_MULTIPLIER: u64 = 10;
 /// Drop blocks whose height are beyond head + horizon.
-const BLOCK_HORIZON: u64 = 500;
+const BLOCK_HORIZON: u64 = 1000;
 
 pub struct ClientActor {
     /// Adversarial controls

@@ -19,7 +19,7 @@ if [[ ${commit} == "HEAD" ]]; then
 fi
 os=$(uname)
 
-make release
+#make release
 
 mkdir -p outside/metadata
 mkdir -p ~/.ssh

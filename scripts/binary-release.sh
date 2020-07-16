@@ -21,6 +21,7 @@ os=$(uname)
 
 #make release
 
+# Save network state and config to S3
 mkdir -p outside/metadata
 mkdir -p ~/.ssh
 echo "$SSH_PRIV_KEY" | tr -d '\r' > ~/.ssh/id_rsa

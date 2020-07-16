@@ -2,15 +2,12 @@
 set -euo pipefail
 
 function branch_to_net {
-    if [ "$1" == "post-phase-1" ]; then 
+    if [ "$1" == "master" ]; then 
         echo "guildnet"
     elif [ "$1" == "beta" ]; then
         echo "betanet"
     elif [ "$1" == "stable" ]; then
         echo "testnet"
-    elif [ "$1" == "master" ]; then
-        echo "devnet"
-    fi
 }
 
 branch=${BUILDKITE_BRANCH:-${GITHUB_REF##*/}}
@@ -32,10 +29,10 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa 
 ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
 
-scp -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST:~/.near/guildnet/config.json outside/
+scp -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST:~/.near/${net}/config.json outside/
 
 msg=$(git log --no-merges -1 --oneline)
-if [[ $msg == *"Hard Fork"* ]]; then
+if [[ $msg == *"hard-fork"* ]]; then
     scp -o StrictHostKeyChecking=no target/release/state-viewer $SSH_USER@$SSH_HOST:~/
     ssh $SSH_USER@$SSH_HOST "~/.nearup/nearup stop && ./state-viewer --home ~/.near/${net}/ dump_state && ~/.nearup/nearup ${net} --nodocker" 
     scp -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST:~/.near/${net}/output.json outside/genesis.json

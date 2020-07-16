@@ -64,6 +64,8 @@ curl --proto '=https' --tlsv1.2 -sSfL https://up.near.dev | python3
 You can join all the active networks:
 * TestNet: `nearup testnet`
 * BetaNet: `nearup betanet`
+* GuildNet: `nearup guildnet`
+* DevNet: `nearup devnet`
 
 Check `nearup` repository for [more details](https://github.com/near/nearup) how to run with or without docker.
 

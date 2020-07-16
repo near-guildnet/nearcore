@@ -37,7 +37,7 @@ msg=$(git log --no-merges -1 --oneline)
 if [[ $msg == *"hard-fork"* ]]; then
     #scp -o StrictHostKeyChecking=no target/release/state-viewer $SSH_USER@$SSH_HOST:~/
     #ssh $SSH_USER@$SSH_HOST "~/.nearup/nearup stop && ./state-viewer --home ~/.near/${net}/ dump_state && ~/.nearup/nearup ${net} --nodocker"
-    ssh $SSH_USER@$SSH_HOST "source $HOME/.cargo/env && cd ~/nearcore && ~/.nearup/nearup stop && cargo run -p state-viewer -- dump_state" 
+    ssh $SSH_USER@$SSH_HOST "source ~/.cargo/env && cd ~/nearcore && ~/.nearup/nearup stop && cargo run -p state-viewer -- dump_state" 
     scp -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST:~/.near/${net}/output.json outside/genesis.json
 else
     scp -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST:~/.near/${net}/genesis.json outside/

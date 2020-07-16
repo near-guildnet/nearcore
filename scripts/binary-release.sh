@@ -8,6 +8,7 @@ function branch_to_net {
         echo "betanet"
     elif [ "$1" == "stable" ]; then
         echo "testnet"
+    fi
 }
 
 branch=${BUILDKITE_BRANCH:-${GITHUB_REF##*/}}

@@ -19,7 +19,7 @@ if [[ ${commit} == "HEAD" ]]; then
 fi
 os=$(uname)
 
-#make release
+make release
 
 # Save network state and config to S3
 mkdir -p outside/metadata

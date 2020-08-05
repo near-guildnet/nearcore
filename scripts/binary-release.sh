@@ -2,7 +2,7 @@
 set -euo pipefail
 
 function branch_to_net {
-    if [ "$1" == "master" ]; then 
+    if [ "$1" == "$DEPLOY_VERSION" ]; then 
         echo "guildnet"
     elif [ "$1" == "beta" ]; then
         echo "betanet"

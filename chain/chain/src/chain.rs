@@ -4,8 +4,8 @@ use std::time::{Duration as TimeDuration, Instant};
 
 use borsh::BorshSerialize;
 use chrono::Duration;
-use chrono::Utc;
 use log::{debug, error, info, warn};
+use num_rational::Rational;
 use rand::rngs::StdRng;
 use rand::seq::SliceRandom;
 use rand::SeedableRng;

@@ -55,7 +55,7 @@ NEAR Protocol is built to deliver usability and scalability of modern PaaS like 
 
 ## Join the GuildNet Network
 
-The easiest way to join the network, is by using `nearup` command, which you can install:
+The easiest way to join the GuildNet network, is by using `nearup` command, which you can install:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/near-guildnet/nearup/master/nearup | python3

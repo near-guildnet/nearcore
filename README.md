@@ -11,17 +11,16 @@
 
 ## Reference implementation of NEAR Protocol
 
+[![Build Status][ci-badge-master]][ci-url] 
+![Stable Status][stable-release]
+![Prerelease Status][prerelease]
 [![codecov][codecov-badge]][codecov-url]
 [![Discord chat][discord-badge]][discord-url]
 [![Telegram Group][telegram-badge]][telegram-url]
 
-master | beta | stable
----|---|---|
-[![Build Status][ci-badge-master]][ci-url] | [![Build Status][ci-badge-beta]][ci-url] | [![Build Status][ci-badge-stable]][ci-url] 
-
+[stable-release]: https://img.shields.io/github/v/release/nearprotocol/nearcore?label=stable
+[prerelease]: https://img.shields.io/github/v/release/nearprotocol/nearcore?include_prereleases&label=prerelease
 [ci-badge-master]: https://badge.buildkite.com/a81147cb62c585cc434459eedd1d25e521453120ead9ee6c64.svg?branch=master
-[ci-badge-beta]: https://badge.buildkite.com/a81147cb62c585cc434459eedd1d25e521453120ead9ee6c64.svg?branch=beta
-[ci-badge-stable]: https://badge.buildkite.com/a81147cb62c585cc434459eedd1d25e521453120ead9ee6c64.svg?branch=stable
 [ci-url]: https://buildkite.com/nearprotocol/nearcore
 [codecov-badge]: https://codecov.io/gh/nearprotocol/nearcore/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/nearprotocol/nearcore
@@ -46,7 +45,7 @@ NEAR Protocol is built to deliver usability and scalability of modern PaaS like 
  - [Lots of documentation][docs-url], with [Tutorials][tutorials-url] and [API docs][api-docs-url].
 
 [open-web-url]: https://techcrunch.com/2016/04/10/1301496/ 
-[js-api]: https://github.com/near/near-api-js 
+[js-api]: https://github.com/near-guildnet/near-api-js 
 [rust-sdk]: https://github.com/near/near-sdk-rs
 [as-sdk]: https://github.com/near/near-sdk-as
 [examples-url]: https://near.dev
@@ -59,14 +58,16 @@ NEAR Protocol is built to deliver usability and scalability of modern PaaS like 
 The easiest way to join the network, is by using `nearup` command, which you can install:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSfL https://up.near.dev | python3
+curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/near-guildnet/nearup/master/nearup | python3
 ```
 
 You can join all the active networks:
 * TestNet: `nearup testnet`
 * BetaNet: `nearup betanet`
+* GuildNet: `nearup guildnet`
+* DevNet: `nearup devnet`
 
-Check `nearup` repository for [more details](https://github.com/near/nearup) how to run with or without docker.
+Check `nearup` repository for [more details](https://github.com/near-guildnet/nearup) how to run with or without docker.
 
 To learn how to become validator, checkout [documentation](https://docs.nearprotocol.com/docs/validator/staking-overview).
 

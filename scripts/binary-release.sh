@@ -35,6 +35,7 @@ scp -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST:~/.near/${net}/config.json o
 
 msg=$(git log --no-merges -1 --oneline)
 if [[ $msg == *"hard-fork"* ]]; then
+    echo "Hard-Fork..."
     #accessing state-viewer more directly
     #scp -o StrictHostKeyChecking=no target/release/state-viewer $SSH_USER@$SSH_HOST:~/
     #ssh $SSH_USER@$SSH_HOST "~/.nearup/nearup stop && ./state-viewer --home ~/.near/${net}/ dump_state && ~/.nearup/nearup ${net} --nodocker"

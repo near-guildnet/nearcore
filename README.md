@@ -45,7 +45,7 @@ NEAR Protocol is built to deliver usability and scalability of modern PaaS like 
  - [Lots of documentation][docs-url], with [Tutorials][tutorials-url] and [API docs][api-docs-url].
 
 [open-web-url]: https://techcrunch.com/2016/04/10/1301496/ 
-[js-api]: https://github.com/near/near-api-js 
+[js-api]: https://github.com/near-guildnet/near-api-js 
 [rust-sdk]: https://github.com/near/near-sdk-rs
 [as-sdk]: https://github.com/near/near-sdk-as
 [examples-url]: https://near.dev
@@ -58,14 +58,16 @@ NEAR Protocol is built to deliver usability and scalability of modern PaaS like 
 The easiest way to join the network, is by using `nearup` command, which you can install:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSfL https://up.near.dev | python3
+curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/near-guildnet/nearup/master/nearup | python3
 ```
 
 You can join all the active networks:
 * TestNet: `nearup testnet`
 * BetaNet: `nearup betanet`
+* GuildNet: `nearup guildnet`
+* DevNet: `nearup devnet`
 
-Check `nearup` repository for [more details](https://github.com/near/nearup) how to run with or without docker.
+Check `nearup` repository for [more details](https://github.com/near-guildnet/nearup) how to run with or without docker.
 
 To learn how to become validator, checkout [documentation](https://docs.nearprotocol.com/docs/validator/staking-overview).
 

@@ -2,7 +2,7 @@ name: Test
 on:
   push:
     branches:
-      - 1.9.0-rc.1
+      - 1.15.0-rc.1
       - master
       - beta
       - stable

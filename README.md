@@ -29,7 +29,7 @@
 [telegram-badge]: https://cdn.jsdelivr.net/gh/Patrolavia/telegram-badge@8fe3382b3fd3a1c533ba270e608035a27e430c2e/chat.svg
 [telegram-url]: https://t.me/cryptonear
 
-## About NEAR
+## About NEAR GuildNet
 
 NEAR's purpose is to enable community-driven innovation to benefit people around the world.
 

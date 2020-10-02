@@ -4,7 +4,6 @@ on:
     branches:
       - 1.15.0-rc.1
       - master
-      - beta
 jobs:
   build_binary:
     runs-on: ubuntu-latest

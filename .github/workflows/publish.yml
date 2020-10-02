@@ -5,7 +5,6 @@ on:
       - 1.15.0-rc.1
       - master
       - beta
-      - stable
 jobs:
   build_binary:
     runs-on: ubuntu-latest

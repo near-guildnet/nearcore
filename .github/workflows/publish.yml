@@ -6,7 +6,6 @@ on:
       - master
       - beta
       - stable
-      - post-phase-1
 jobs:
   build_binary:
     runs-on: ubuntu-latest

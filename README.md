@@ -68,6 +68,5 @@ You can join all the active networks:
 
 Check `nearup` repository for [more details](https://github.com/near-guildnet/nearup) how to run with or without docker.
 
-To learn how to become validator, checkout [documentation](https://docs.nearprotocol.com/docs/validator/staking-overview).
 
  

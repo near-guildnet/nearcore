@@ -62,8 +62,6 @@ curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/near-gui
 ```
 
 You can join all the active networks:
-* TestNet: `nearup testnet`
-* BetaNet: `nearup betanet`
 * GuildNet: `nearup guildnet`
 
 Check `nearup` repository for [more details](https://github.com/near-guildnet/nearup) how to run with or without docker.

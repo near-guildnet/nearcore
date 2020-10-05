@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - 1.15.0-rc.1
+      - master
+      - beta
+      - stable
+      - post-phase-1
 jobs:
   build_binary:
     runs-on: ubuntu-latest

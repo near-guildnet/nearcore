@@ -53,7 +53,7 @@ NEAR Protocol is built to deliver usability and scalability of modern PaaS like 
 [tutorials-url]: https://docs.nearprotocol.com/docs/roles/developer/tutorials/introduction
 [api-docs-url]: https://docs.nearprotocol.com/docs/roles/developer/examples/nearlib/introduction
 
-## Join the Network
+## Join GuildNet
 
 The easiest way to join the network, is by using `nearup` command, which you can install:
 

@@ -54,6 +54,8 @@ cp outside/genesis.json outside/metadata/
 cp outside/config.json outside/metadata/
 
 function upload_binary {
+    aws s3 cp --acl public-read target/release/$1 s3://build.openshards.io/nearcore/${os}/${branch}/$1
+    aws s3 cp --acl public-read target/release/$1 s3://build.openshards.io/nearcore/${os}/${branch}/${commit}/$1
     aws s3 cp --acl public-read target/release/$1 s3://build.openshards.io/nearcore/${os}/${commit}/$1
     aws s3 cp --acl public-read target/release/$1 s3://build.openshards.io/nearcore/${os}/${commit}/${commit}/$1
 }

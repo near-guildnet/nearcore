@@ -17,9 +17,10 @@ jobs:
         rust-version: nightly-2020-03-19
     - uses: actions/checkout@master
     - uses: chrislennon/action-aws-cli@v1.1
-    - run: scripts/binary-release.sh
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    - run: scripts/binary-release.sh
+      env:
         SSH_USER: ${{ secrets.SSH_USER }}
         SSH_HOST: ${{ secrets.SSH_HOST }}
         SSH_PUB_KEY: ${{ secrets.SSH_PUB_KEY }}

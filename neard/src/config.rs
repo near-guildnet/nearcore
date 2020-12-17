@@ -762,7 +762,54 @@ pub fn init_configs(
             genesis.to_file(&dir.join(config.genesis_file));
             info!(target: "near", "Generated MainNet genesis file in {}", dir.to_str().unwrap());
         }
-        "testnet" | "betanet" => {
+        "guildnet" => {
+            if test_seed.is_some() {
+                panic!("Test seed is not supported for official TestNet");
+            }
+            let mut config = Config::default();
+            config.telemetry.endpoints.push(NETWORK_TELEMETRY_URL.replace("{}", &chain_id));
+
+            if let Some(account_id) = account_id {
+                generate_validator_key(account_id, &dir.join(config.validator_key_file));
+            }
+
+            let network_signer = InMemorySigner::from_random("".to_string(), KeyType::ED25519);
+            network_signer.write_to_file(&dir.join(config.node_key_file));
+
+            // download genesis from s3
+            let genesis_path = dir.join("genesis.json");
+            let mut genesis_path_str =
+                genesis_path.to_str().expect("Genesis path must be initialized");
+
+            if let Some(url) = download_genesis_url {
+                download_genesis(&url.to_string(), &genesis_path);
+            } else if download {
+                let url = get_genesis_url(&chain_id);
+                download_genesis(&url, &genesis_path);
+            } else {
+                genesis_path_str =
+                    genesis.unwrap_or_else(|| panic!("Genesis file is required for {}.", &chain_id))
+            }
+            
+            let mut genesis = Genesis::from_file(&genesis_path_str);
+            genesis.config.chain_id = chain_id.clone();
+
+            genesis.to_file(&dir.join(config.genesis_file));
+            info!(target: "near", "Generated for {} network node key and genesis file in {}", chain_id, dir.to_str().unwrap());
+            
+            // download config from s3
+            let config_path = dir.join("config.json");
+
+            if download {
+                let url = get_config_url(&chain_id);
+                download_config(&url, &config_path);
+            } else {
+                let mut config = Config::default();
+                config.telemetry.endpoints.push(NETWORK_TELEMETRY_URL.replace("{}", &chain_id));
+                config.write_to_file(&dir.join(CONFIG_FILENAME));
+            }        
+        }
+        "testnet" | "betanet"=> {
             if test_seed.is_some() {
                 panic!("Test seed is not supported for official TestNet");
             }
@@ -791,7 +838,7 @@ pub fn init_configs(
                 genesis_path_str =
                     genesis.unwrap_or_else(|| panic!("Genesis file is required for {}.", &chain_id))
             }
-
+            
             let mut genesis = Genesis::from_file(&genesis_path_str);
             genesis.config.chain_id = chain_id.clone();
 
@@ -973,15 +1020,61 @@ pub fn init_testnet_configs(
     }
 }
 
+pub fn download_config(url: &String, path: &PathBuf) {
+    info!(target: "near", "Downloading config file from: {} ...", url);
+
+    let url = url.clone();
+    let path = path.clone();
+
+    actix::System::builder().build().block_on(async move {
+        let client = actix_web::client::Client::new();
+        let mut response =
+            client.get(url).send().await.expect("Unable to download the config file");
+
+        // IMPORTANT: limit specifies the maximum size of the config
+        // In case where the config is bigger than the specified limit Overflow Error is thrown
+        let body = response
+            .body()
+            .limit(1_000_000_000)
+            .await
+            .expect("Config file is bigger than 1.0GB. Please make the limit higher.");
+
+        std::fs::write(&path, &body).expect("Failed to create / write a config file.");
+
+        info!(target: "near", "Saved the config file to: {} ...", path.as_path().display());
+    });
+}
+
+pub fn get_config_url(chain_id: &String) -> String {
+    if chain_id != "guildnet" {
+        format!(
+            "https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/{}/config.json",
+            chain_id,
+        )
+    } else {
+        format!(
+            "https://s3.us-east-2.amazonaws.com/build.openshards.io/nearcore-deploy/{}/config.json",
+            chain_id,
+        )
+    }
+}
+
 pub fn get_genesis_url(chain_id: &String) -> String {
-    format!(
-        "https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/{}/genesis.json",
-        chain_id,
-    )
+    if chain_id != "guildnet" {
+        format!(
+            "https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/{}/genesis.json",
+            chain_id,
+        )
+    } else {
+        format!(
+            "https://s3.us-east-2.amazonaws.com/build.openshards.io/nearcore-deploy/{}/genesis.json",
+            chain_id,
+        )
+    }
 }
 
 pub fn download_genesis(url: &String, path: &PathBuf) {
-    info!(target: "near", "Downloading config file from: {} ...", url);
+    info!(target: "near", "Downloading genesis file from: {} ...", url);
 
     let url = url.clone();
     let path = path.clone();

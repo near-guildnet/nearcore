@@ -53,7 +53,7 @@ NEAR Protocol is built to deliver usability and scalability of modern PaaS like 
 [tutorials-url]: https://docs.nearprotocol.com/docs/roles/developer/tutorials/introduction
 [api-docs-url]: https://docs.nearprotocol.com/docs/roles/developer/examples/nearlib/introduction
 
-## Join the Network
+## Join the GuildNet Network
 
 The easiest way to join the network, is by using `nearup` command, which you can install:
 
@@ -62,10 +62,8 @@ curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/near-gui
 ```
 
 You can join all the active networks:
-* TestNet: `nearup testnet`
-* BetaNet: `nearup betanet`
 * GuildNet: `nearup guildnet`
-* DevNet: `nearup devnet`
+
 
 Check `nearup` repository for [more details](https://github.com/near-guildnet/nearup) how to run with or without docker.
 

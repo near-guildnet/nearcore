@@ -61,7 +61,7 @@ The easiest way to join the network, is by using `nearup` command, which you can
 curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/near-guildnet/nearup/master/nearup | python3
 ```
 
-You can join all the active networks:
+You the network:
 * GuildNet: `nearup guildnet`
 
 

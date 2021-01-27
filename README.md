@@ -69,8 +69,3 @@ Check `nearup` repository for [more details](https://github.com/near-guildnet/ne
 
 To learn how to become validator, checkout [documentation](https://docs.nearprotocol.com/docs/validator/staking-overview).
 
-
-## Contributing
-
-The workflow and details of setup to contribute are described in [CONTRIBUTING.md](CONTRIBUTING.md), and security policy is described in [SECURITY.md](SECURITY.md).
-To propose new protocol change or standard use [Specification & Standards repository](https://github.com/nearprotocol/NEPs). 

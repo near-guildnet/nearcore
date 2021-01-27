@@ -53,9 +53,9 @@ NEAR Protocol is built to deliver usability and scalability of modern PaaS like 
 [tutorials-url]: https://docs.nearprotocol.com/docs/roles/developer/tutorials/introduction
 [api-docs-url]: https://docs.nearprotocol.com/docs/roles/developer/examples/nearlib/introduction
 
-## Join GuildNet
+## Join The GuildNet Network
 
-The easiest way to join the network, is by using `nearup` command, which you can install:
+The easiest way to join GuildNet, is by using `nearup` command, which you can install:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/near-guildnet/nearup/master/nearup | python3
@@ -69,13 +69,6 @@ Check `nearup` repository for [more details](https://github.com/near-guildnet/ne
 
 To learn how to become validator, checkout [documentation](https://docs.nearprotocol.com/docs/validator/staking-overview).
 
-## Development Status
-
-This project is currently under heavy development toward MainNet launch.
-
-We are using [ZenHub](https://zenhub.com) to manage the development process. You can either login on their website or [install ZenHub extension](https://www.zenhub.com/extension) to see additional information right on Github.
-
-For the high-level roadmap, checkout [Chain&Middleware's roadmap](https://app.zenhub.com/workspaces/chainmiddleware-5cea2bcf78297c385cf0ec81/roadmap). 
 
 ## Contributing
 

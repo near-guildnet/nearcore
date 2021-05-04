@@ -35,17 +35,17 @@ NEAR's purpose is to enable community-driven innovation to benefit people around
 
 To achieve this purpose, *NEAR* provides a developer platform where developers and entrepreneurs can create apps that put users back in control of their data and assets, which is the foundation of ["Open Web" movement][open-web-url].
 
-One of the components of *NEAR* is the NEAR Protocol, an infrastructure for server-less applications and smart contracts powered by a blockchain.
-NEAR Protocol is built to deliver usability and scalability of modern PaaS like Firebase at fraction of the prices that blockchains like Ethereum charge.
+One of the components of *NEAR* is NEAR Protocol, an infrastructure for server-less applications and smart contracts powered by blockchain.
+NEAR Protocol is built to deliver usability and scalability of modern PaaS like Firebase at fraction of prices that blockchains like Ethereum charge.
 
-Overall, *NEAR* provides a wide range of tools for developers to easily build applications:
+*NEAR* overall provides wide range of tools for developers to easily build applications:
  - [JS Client library][js-api] to connect to NEAR Protocol from your applications.
  - [Rust][rust-sdk] and [AssemblyScript][as-sdk] SDKs to write smart contracts and stateful server-less functions.
  - [Numerous examples][examples-url] with links to hack on them right inside your browser.
  - [Lots of documentation][docs-url], with [Tutorials][tutorials-url] and [API docs][api-docs-url].
 
 [open-web-url]: https://techcrunch.com/2016/04/10/1301496/ 
-[js-api]: https://github.com/near/near-api-js 
+[js-api]: https://github.com/near-guildnet/near-api-js 
 [rust-sdk]: https://github.com/near/near-sdk-rs
 [as-sdk]: https://github.com/near/near-sdk-as
 [examples-url]: https://near.dev
@@ -53,29 +53,19 @@ Overall, *NEAR* provides a wide range of tools for developers to easily build ap
 [tutorials-url]: https://docs.nearprotocol.com/docs/roles/developer/tutorials/introduction
 [api-docs-url]: https://docs.nearprotocol.com/docs/roles/developer/examples/nearlib/introduction
 
-## Join the Network
+## Join The GuildNet Network
 
-The easiest way to join the network, is by using the `nearup` command, which you can install as follows:
+The easiest way to join GuildNet, is by using `nearup` command, which you can install:
 
 ```bash
-pip3 install --user nearup
+curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/near-guildnet/nearup/master/nearup | python3
 ```
 
-You can join all the active networks:
-* TestNet: `nearup run testnet`
-* BetaNet: `nearup run betanet`
+You the network:
+* GuildNet: `nearup guildnet`
 
-Check the `nearup` repository for [more details](https://github.com/near/nearup) how to run with or without docker.
+
+Check `nearup` repository for [more details](https://github.com/near-guildnet/nearup) how to run with or without docker.
 
 To learn how to become validator, checkout [documentation](https://docs.nearprotocol.com/docs/validator/staking-overview).
 
-## Development Status
-
-We are using [ZenHub](https://zenhub.com) to manage the development process. You can either login on their website or [install ZenHub extension](https://www.zenhub.com/extension) to see additional information right on Github.
-
-For the high-level roadmap, checkout [Chain&Middleware's roadmap](https://app.zenhub.com/workspaces/chainmiddleware-5cea2bcf78297c385cf0ec81/roadmap). 
-
-## Contributing
-
-The workflow and details of setup to contribute are described in [CONTRIBUTING.md](CONTRIBUTING.md), and security policy is described in [SECURITY.md](SECURITY.md).
-To propose new protocol changes or standards use [Specification & Standards repository](https://github.com/nearprotocol/NEPs).

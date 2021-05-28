@@ -4,7 +4,6 @@ on:
     branches:
       - 1.19.1
       - master
-      - beta
       - stable
 jobs:
   test:

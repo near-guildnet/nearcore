@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - 1.19.1
-      - master
 jobs:
   test:
     runs-on: ubuntu-latest
